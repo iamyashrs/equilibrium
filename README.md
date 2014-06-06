@@ -8,7 +8,7 @@ social way of looking into various ongoing projects and organize them in such a 
 This application was submitted for *Google Cloud Developer Challenge 2013* and was among one of the [finalists](http://www.google.com/events/gcdc2013/finalists.html) for India region.
 
 <p align="center">
-  <img src="https://gcdc2013-equilibrium.appspot.com/img/Hinder2.png" style="height: 192px;width:192px;" alt="Equilibrium - GCDC">
+  <img src="https://raw.githubusercontent.com/yashrajsingh/Equilibrium-GCDC2013/master/static/img/Hinder2.png" style="height: 192px;width:192px;" alt="Equilibrium - GCDC">
 </p>
 
 <p align="center">
@@ -54,4 +54,4 @@ Help and Support
 
 [Homepage](https://gcdc2013-equilibrium.appspot.com/)
 
-[Yash Raj Singh](http://yashrajsingh.net/)
+[Author](http://yashrajsingh.net/)
