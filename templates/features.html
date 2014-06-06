@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Features Equilibrium - Work made easy.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Yash Raj Singh">
+    <link rel="shortcut icon" href="favicon.ico">
+    <meta property="og:title" content="Equilibrium - Work made easy."/>
+    <meta property="og:type" content="app"/>
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image" content="/img/Hinder250.png"/>
+    <meta property="og:image:height" content="250" />
+    <meta property="og:image:width" content="250" />
+    <meta itemprop="description" content="Introducing Equilibrium. Work made easy.
+With Equilibrium what we are trying to do, is make managing *projects deadlines* within a workplace/ﬁrm etc more social. So that workplaces can have a centralized
+social way of looking into various ongoing projects and organize them in such a way that results in a more productive environment.">
+    <meta property="og:url" content="http://gcdc2013-equilibrium.appspot.com/"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta property="og:site_name" content="Equilibrium"/>
+    <meta property="fb:admins" content="Yash Raj Singh"/>
+    <meta property="og:description" content="Introducing Equilibrium. Work made easy."/>
+    <meta property="og:description" content="Introducing Equilibrium. Work made easy.
+With Equilibrium what we are trying to do, is make managing *projects deadlines* within a workplace/ﬁrm etc more social. So that workplaces can have a centralized
+social way of looking into various ongoing projects and organize them in such a way that results in a more productive environment.
+We utilized Google+ as our backbone for users to log in into the web-app, to either create there own workplaces or others can add them to their workplaces with
+user's email and have a collaborative look into the deadline's.
+Its snappy, clean, portable, has responsive design and overall it takes literally 4-Clicks to add your Workplace/Firm/Company and literally 2-Clicks more to add your project
+in your workplace zone.
+Equilibrium, utilizes various APl's like Google+ API, Wikipedia API, Google Custom Search API, Google Maps API etc for automating the details and suggesting changes
+to a ﬁrm. S0 users don't have waste time in organizing and get fast to their real work and add their projects.
+Each Project is shown in a *Card* shaped 51%. With each ProjectlCard having back colors(red,orange,yellow,green,grey) depending on its urgency. With a time-down
+clock running in the card to deﬁne its deadline time. That's where the magic happens. These cards, are an easy way of organizing various projects, and the snappiest way
+to equalize your work.
+The web-app is ﬂat-designed with clean and professional color palette. Its also responsive, so users can utilize the app in Mobile, Tablet, Laptop, Desktop and they will be
+greeted with a nice responsive design. Utilizes Twitter Bootstrap, Flask, jinja2 and other framework's to make it look good overall.
+Various language per se Google App engine, Python, javascript, html, css etc are backbone."/>
+    <link href="https://plus.google.com/114735145951954578875" rel="publisher"/>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom styles for this template -->
+    <link href="/css/carousel.css" rel="stylesheet">
+
+    <STYLE type="text/css">
+    .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
+    color: #D8D8D8;
+    }
+    .navbar-brand{
+        color:#FFF;
+    }
+    .navbar-brand:hover {
+        color:#CECECE;
+    }
+
+    .video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px; height: 0; overflow: hidden;
+    }
+
+    .video-container iframe,
+    .video-container object,
+    .video-container embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    </STYLE>
+  </head>
+<!-- NAVBAR
+================================================== -->
+  <body>
+
+    <div class="navbar navbar-default navbar-fixed-top" style="background-color:#333;">
+      <div class="container">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+      <a class="navbar-brand" href="/" style="color:#FFF; font-weight: bold;">
+       <img src="/img/Hinder-alpha32.png" style="margin-right:5px;"/>
+          Equilibrium
+       <span style="color:#D8D8D8;font-size:9px;">Beta</span>
+      </a>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right" style="margin-top: 7px;">
+            <li class=""><a href="/">Home</a></li>
+                  {% if logged_in %}
+              <li class="">
+                <a href="/profile?pro_id={{ user.key.id() }}">Profile</a>
+              </li>
+              <li class="">
+                <a href="./logout">Logout</a>
+              </li>
+                {% else %}
+              <li><a href="/about">About</a></li>
+              <li><a href="/privacy">Privacy</a></li>
+              <li>
+                  <a href="/auth/google">Login(G+)</a>
+              </li>
+              {% endif %}
+        </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+
+      <div class="row" style="margin-top:150px;">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+    <div class="video-container">
+<iframe width="640" height="360" src="//www.youtube.com/embed/4xJ2moFagb4" frameborder="0" allowfullscreen></iframe>
+    </div>
+        </div>
+        <div class="col-lg-2"></div>
+      </div>
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+    <div class="container">
+    <div class="container marketing">
+
+
+    <hr class="featurette-divider" style="border:1px solid #FFF;">
+      <!-- Three columns of text below the carousel -->
+      <div class="row">
+        <div class="col-lg-4">
+          <img src="/img/f/Calendar-icon.png" style="width:120px;height:120px;" alt="Generic placeholder image">
+          <h2>Time</h2>
+          <p>Work on time. Get things done on time and be the star of the project.</p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img src="/img/f/Arrow-Bulls-Eye-icon.png" style="width:120px;height:120px;" alt="Generic placeholder image">
+          <h2>Done!</h2>
+          <p>Be aware of the ongoings of the project and get it done!</p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img src="/img/f/Chat-icon.png" style="width:120px;height:120px;" alt="Generic placeholder image">
+          <h2>Social</h2>
+          <p>Equilibrium, is in itself social. So you don't have to add every firm/workplace, just get invited to one with your email.</p>
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
+
+      <!-- START THE FEATURETTES -->
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Manage Like Never Before.<span class="text-muted"></span></h2>
+          <p class="lead">Manage your work, Don't let it manage you. With Equilibrium, you manage your work and projects deadline's so easily you would enjoy getting in <b>"Project Dead"</b>.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" alt="Generic placeholder image" src="https://lh3.googleusercontent.com/-0EA2L6s_GPc/UpMbPxb06TI/AAAAAAAAAZ0/5IrciGGwvyM/w851-h315-no/557234_284511938291234_1253508810_n.jpg">
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" src="https://lh6.googleusercontent.com/-vj0XD0bF5o0/UtQXgwgYw4I/AAAAAAAAAUQ/Y11q5nBZSqs/w771-h507-no/eqm.png" alt="Generic placeholder image">
+        </div>
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Throw away the Calendar <span class="text-muted" style="font-size:15px;">See for yourself.</span></h2>
+          <p class="lead">Yup, you are done with the calendar, start being smart and equalize your work. With Equilibrium, you don't need a calendar you can just quickly snap and know the time left. </p>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">And lastly, this is just the beginning.</h2>
+          <p class="lead">Since, the app is in beta stages, you can await and hold on for some of the best productivity updates you are ever gonna witness.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive" src="https://lh5.googleusercontent.com/-dd7y0NBr8dY/UsfvNdxGeLI/AAAAAAAAAMI/cTrihl_VK_c/w741-h593-no/semantic.png" alt="Generic placeholder image">
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <!-- /END THE FEATURETTES -->
+
+
+       <!-- FOOTER -->
+      <footer style="font-size:11px;">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>&copy; 2013 Equilibrium, Inc. &middot;<a href="/features">Help</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/about">About</a></p>
+      </footer>
+
+    </div><!-- /.container -->
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/holder.js"></script>
+  </body>
+</html>

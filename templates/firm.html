@@ -1,0 +1,206 @@
+{% extends "layout.html" %}
+{% block main %}
+
+  <div class="container" style="margin-bottom: 2em;">
+{% if firm.admin_id==user.key.id() %}
+<br/>
+<div class="details">
+<h3>Edit your details</h3>
+    <div class="row">
+     <div class="col-md-7">
+
+        <form action="{{ upload_url }}" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="inputEmail">Logo:</label>
+                <div class="col-lg-10">
+                  <input type="file" name="logo" class="logo-input"/>
+                  <img src="{{ image_url }}" style="float:right;padding: 5px;height:75px;width:75px;">
+                </div>
+              </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="inputEmail">Title:</label>
+                <div class="col-lg-10">
+                  <input type="text" class="form-control" name="title" required placeholder="Title" value="{{ firm.title }}">
+                </div>
+              </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="inputEmail">Website:</label>
+                <div class="col-lg-10">
+                  <input type="url" class="form-control" name="link" required placeholder="Official Website.." pattern="https?://.+" value="{{ firm.link }}">
+                </div>
+              </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="inputEmail">Description:</label>
+                <div class="col-lg-10">
+                  <textarea name="desc" class="form-control" rows="5" required placeholder="Description(tit-bits)..">{{ firm.desc }}</textarea>
+                </div>
+                <div style="font-size:10px;">
+                    {% autoescape on %}
+                    {{ desc }}
+                {% endautoescape %}
+                </div>
+              </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="inputEmail">Cover:</label>
+                <div class="col-lg-10">
+                  <input type="url" class="form-control" name="picture" required placeholder="Picture Link.." pattern="https?://.+" value="{{ firm.picture }}">
+                </div>
+              </div>
+
+            <div class="form-group">
+
+            <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=#&sensor=false"></script>
+            <script type="text/javascript">
+              var map;
+              var geocoder;
+              var infowindow = new google.maps.InfoWindow();
+              var marker;
+              function initialize() {
+              geocoder = new google.maps.Geocoder();
+                  {% if firm.pos %}
+              var myLatlng = new google.maps.LatLng({{ firm.pos.lat }},{{ firm.pos.lon }});
+                      {% else %}
+              var myLatlng = new google.maps.LatLng(28.635308, 77.224960);
+                      {% endif %}
+              var myOptions = {
+                 zoom: 8,
+                 center: myLatlng,
+                 mapTypeId: google.maps.MapTypeId.ROADMAP
+                 }
+              map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+              marker = new google.maps.Marker({
+                  draggable: true,
+                  position: myLatlng,
+                  map: map,
+                  title: "Your location"
+              });
+
+              google.maps.event.addListener(marker, 'click', function (event) {
+                document.getElementById("latbox").value = this.getPosition().lat();
+                document.getElementById("lngbox").value = this.getPosition().lng();
+            });
+
+                  google.maps.event.addListener(marker, 'dragend', function (event) {
+                document.getElementById("latbox").value = this.getPosition().lat();
+                document.getElementById("lngbox").value = this.getPosition().lng();
+            });
+            }
+
+
+            function codeLatLng() {
+              var latlng = new google.maps.LatLng({{ firm.pos.lat }},{{ firm.pos.lon }});
+              geocoder.geocode({'latLng': latlng}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                  if (results[1]) {
+                    map.setZoom(11);
+                    marker = new google.maps.Marker({
+                        position: latlng,
+                        map: map
+                    });
+                    infowindow.setContent(results[1].formatted_address);
+                    infowindow.open(map, marker);
+                  } else {
+                    alert('No results found');
+                  }
+                } else {
+                  alert('Geocoder failed due to: ' + status);
+                }
+              });
+            }
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+            </script>
+                <label class="col-lg-2 control-label" for="inputEmail">Location:</label>
+                <div class="col-lg-10">
+                <span style="color:darkred;font-size:11px;padding:10px;">*Drag the marker to change location</span>
+                <br/>
+                <div id="map_canvas" style="width:100%; height:200px"></div>
+
+                  <div id="latlong">
+                      <input size="20" type="hidden" id="latbox" name="lat" class="form-control" value="28.635308">
+                      <input size="20" type="hidden" id="lngbox" name="lng" class="form-control" value="77.1315762109">
+                  </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="inputEmail">Workplace Privacy Control:</label>
+                <div class="col-lg-10">
+                  <div class="radio">
+                      <label>
+                        <input type="radio" name="type" id="optionsRadios1" value="0" {% if firm.privacy==0 %}checked{% endif %}>
+                        Public
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="type" id="optionsRadios2" value="1" {% if firm.privacy==1 %}checked{% endif %}>
+                        Private
+                      </label>
+                    </div>
+                </div>
+                <script>
+                   $(document).ready(function(){
+                        $("[rel=tooltip]").tooltip({ placement: 'top'});
+                    });
+               </script>
+                <span class="help-block" style="color:#999;font-size:10px;">
+                You can either make projects <a href="#" rel="tooltip" data-toggle="tooltip" title="" data-original-title="Projects posts can either be made public or private. If firm in public, projects will be visible in a user's profile.">public or private.<span class="glyphicon glyphicon-pushpin"></span></a>
+            </span>
+              </div>
+
+            <br/>
+            <div class="form-actions" style="background:none;border:none;">
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Save changes</button>
+              <input type="hidden" name="firm_id" value="{{ firm_id }}">
+            </div>
+            <br/>
+        </form>
+
+        <form method="get" action="/delete_firm">
+            <button type="submit" class="btn btn-default btn-xs">Delete</button>
+            <input type="hidden" name="firm_id" value="{{ firm_id }}">
+        </form>
+
+        <span class="help-block">*some details auto added for you.</span>
+        </div>
+
+        <div class="col-md-5">
+
+            <h4>Preview:</h4>
+            <div class="company" style=" margin:0 auto;">
+                <div class="back" style="background:#EEE url({{ firm.picture }}) right no-repeat;background-size: cover;width:350px;height:150px;">
+                </div>
+                <div class="hero-unit" style="z-index:10;position:relative;background:none;width:290px;height:97px;padding: 15px;">
+                  <h2 style="color:#000;">{{ firm.title }}</h2>
+                  <p style="line-height: 10px;margin: 0 0 0;font-size: 10px;">{{ firm.desc }}</p>
+                  <span style="font-size: 9px;">added by {{ firm.admin.get().name }}</span>
+                  <p>
+                    <a class="btn btn-mini btn-primary" href="{{ firm.link }}">
+                      Learn more
+                    </a>
+                  </p>
+                </div>
+            </div>
+        </div>
+
+      </div>
+    </div>
+
+</div>
+{% else %}
+<div class="No">
+<h2>The ship is sinking.. and you are not the <b>admin!</b></h2>
+</div>
+{% endif %}
+  </div>
+
+<script type="text/javascript">
+$(window).load(initialize());
+$(window).load(codeLatLng());
+</script>
+{% endblock %}

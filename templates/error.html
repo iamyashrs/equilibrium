@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+
+  <div class="container" style="margin-bottom: 2em;">
+  <h2>Error</h2>
+  <p>Error has occured!</p>
+
+  <pre>
+    Wrong URL for website of the company/firm.
+   {{ exception }}
+  </pre>
+  </div>
+
+{% endblock %}

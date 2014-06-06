@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block main %}
+
+
+<div class="container" style="margin-bottom: 2em;">
+{% if firm.admin_id==user.key.id() %}
+<br/>
+    <div class="delete">
+        <h3>Are you sure you want to delete your firm?</h3>
+        <form action="/delete_firm" method="post">
+            <input type="hidden" name="firm_id" value="{{ firm_id }}"/>
+            <input type="submit" class="btn btn-danger" value="Yes, Delete this firm."/>
+        </form>
+    </div>
+
+{% else %}
+<div class="No">
+<h2>The ship is sinking.. and you are not the <b>admin!</b></h2>
+</div>
+{% endif %}
+</div>
+
+
+{% endblock %}

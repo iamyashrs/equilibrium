@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/Product">
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Yash Raj Singh">
+    <link rel="shortcut icon" href="favicon.ico">
+    <meta itemprop="name" content="Equilibrium">
+    <meta itemprop="description" content="Introducing Equilibrium. Work made easy. Managing projects deadlines within a workplace/ﬁrm/company more social.
+     So easy it takes literally 4-Clicks to get started.">
+    <meta itemprop="image" content="http://gcdc2013-equilibrium.appspot.com//img/Hinder250.png">
+    <meta name="google-translate-customization" content="da7465c84cca491f-06ad01ccbd37741d-gbadee39bb1c3153b-21">
+    <meta property="og:title" content="Equilibrium - Work made easy."/>
+    <meta property="og:type" content="app"/>
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image" content="http://gcdc2013-equilibrium.appspot.com//img/Hinder250.png"/>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <meta property="og:image:height" content="250" />
+    <meta property="og:image:width" content="250" />
+    <meta property="og:url" content="http://gcdc2013-equilibrium.appspot.com/"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta property="og:site_name" content="Equilibrium"/>
+    <meta property="fb:admins" content="Yash Raj Singh"/>
+    <meta property="og:description" content="Introducing Equilibrium. Work made easy. Managing projects deadlines within a workplace/ﬁrm/company more social.
+     So easy it takes literally 4-Clicks to get started."/>
+    <link href="https://plus.google.com/114735145951954578875" rel="publisher"/>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+    <link href="/css/datetimepicker.css" rel="stylesheet">
+    <link href="/css/jquery.countdown.css" rel="stylesheet">
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/js/html5shiv.js"></script>
+      <script src="/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<!-- Fixed navbar -->
+<header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner" style="background-color:#333;border:none;">
+      <div class="container">
+         <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+      <a class="navbar-brand" href="/" style="color:#FFF; font-weight: bold;">
+       <img src="/img/Hinder-alpha32.png" style="margin-right:5px;"/>
+          Equilibrium
+       <span style="color:#D8D8D8;font-size:9px;">Beta</span>
+      </a>
+      </div>
+        <div class="navbar-collapse collapse" role="navigation">
+          <ul class="nav navbar-nav navbar-right" style="margin-top: 7px;">
+                  {% if logged_in %}
+             <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="background-color:#333;">
+                  {% if count and count!= 0 %}
+                  <span class="label label-danger count" class="count">{{ count }}  </span>
+                  {% endif %}
+                  <span class="glyphicon glyphicon-bullhorn"></span>
+              </a>
+                <ul class="dropdown-menu notified">
+                  <li role="presentation" class="dropdown-header">Notifications</li>
+                    {% if notifications %}
+                   {% for notification in notifications %}
+                  <li class="notification">
+                      <div class="notify">
+                      <img src="{{ notification.author.get().avatar_url }}?sz=48" style="float:left;margin-right:10px;"/>
+                      <span>{{ notification.body_html|safe }}</span>
+                      </div>
+                  </li>
+                   {% endfor %}
+                    {% else %}
+                    <li class="notification">
+                      <div class="notify">
+                      <h2 style="text-align:center;">none :(</h2>
+                      </div>
+                  </li>
+                    {% endif %}
+                    <br/>
+                </ul>
+              </li>
+            <li class=""><a href="/">Home</a></li>
+              <li class=""><a href="/browse">Browse</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-right: 0px;background-color:#333;">
+                <img src="{{ user.avatar_url }}?sz=24" style="border:1px solid #5A5A5A;"> {{ user.name }}</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/profile?pro_id={{ user.key.id() }}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+                  <li class="divider"></li>
+                  <li><a href="./logout"><span class="glyphicon glyphicon-share-alt"></span> Logout</a></li>
+                </ul>
+              </li>
+                {% else %}
+            <li class=""><a href="/">Home</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/privacy">Privacy</a></li>
+              <li>
+                  <a style="padding-right: 0px;" href="/auth/google">Login(G+)</a>
+              </li>
+              {% endif %}
+        </ul>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+</header>
+
+    {% block main %}{% endblock %}
+
+  <div id="footer">
+      <div class="container">
+        <!-- FOOTER -->
+      <footer style="font-size:11px;">
+        <hr/>
+        <div class="pull-right">
+
+        <div id="google_translate_element"></div><script type="text/javascript">
+        function googleTranslateElementInit() {
+          new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+        </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+         <a href="#">Back to top</a>
+         </div>
+        <p>&copy; 2013 Equilibrium, Inc. &middot;<a href="/features">Help</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/about">About</a> &middot; <a href="http://www.google.com/events/gcdc2013/finalists.html">#gcdc2013 finalist we are :)</a>
+          </p>
+      </footer>
+    </div>
+  </div>
+
+
+ <script src="/js/moment.js"></script>
+ <script src="/js/bootstrap.js"></script>
+ <script src="/js/bootstrap-datetimepicker.js"></script>
+<script>
+function entsub(event,ourform) {
+  if (event && event.which == 13)
+    ourform.submit();
+  else
+    return true;}
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="container" style="margin-bottom: 2em;">
+  <div class="col-md-3" style="padding-left: 0;">
+  <br/>
+  <div class="media">
+    <div class="img avatar">
+      <img src="{{ get_user.avatar_url }}" style="width: 200px; height:auto;border: 5px solid #B3B3B3;">
+      <h3 style="margin-top: 5px; padding-top: 0px;">{{ get_user.name }}</h3>
+      <small><a href="{{ get_user.link }}" target="_blank" rel="nofollow">{{ get_user.link }}</a></small><br/>
+      <small>{{ get_user.email }}</small><br/>
+      <small>Joined on: {{ get_user.created.strftime('%d/%m/%Y') }}</small>
+    </div>
+  </div>
+   <br/>
+  </div>
+
+  <div class="col-md-6" style="padding-left:0;">
+  <br/>
+   <div class="projects">
+      {% for greeting in greetings %}
+      {% if greeting.firm.get().privacy==0 %}
+      <div class="row0" id="{{ greeting.key.id() }}">
+
+        {% if greeting.author.get().key.id()==user.key.id() %}
+        <a data-toggle="modal" href="#myModal{{ greeting.key.id() }}">
+        <button type="button" class="close" aria-hidden="true" style="float:right;">&times;</button>
+        </a>
+
+          <!-- Modal -->
+          <div class="modal fade" id="myModal{{ greeting.key.id() }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header" style="color:#000;">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">Delete Post</h4>
+                </div>
+                <div class="modal-body" style="color:#000;">
+                 Are you sure you want to delete your post?
+                </div>
+                <div class="modal-footer">
+                 <form action="/delete_project" method="post">
+                    <input type="hidden" name="project_id" value="{{ greeting.key.id() }}"/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-primary btn-danger" value="Delete"/>
+                </form>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
+        {% endif %}
+
+        <b style="color:#000;">{{ greeting.title }}</b>
+        <blockquote style="margin: 10px;">{{ greeting.content }}</blockquote>
+        {% for comment in comments %}
+        {% if comment.project_id==greeting.key.id() %}
+            <div class="comment" style="font-size:12px;margin-bottom: 10px;">
+            {% if comment.author.get().key.id()==user.key.id() %}
+            <a data-toggle="modal" href="#myModal{{ comment.key.id() }}">
+            <button type="button" class="close" aria-hidden="true" style="float:right;">&times;</button>
+            </a>
+
+              <!-- Modal -->
+              <div class="modal fade" id="myModal{{ comment.key.id() }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header" style="color:#000;">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title">Delete Comment</h4>
+                    </div>
+                    <div class="modal-body" style="color:#000;">
+                     Are you sure you want to delete your comment?
+                    </div>
+                    <div class="modal-footer">
+                      <form action="/delete_comment" method="post">
+                        <input type="hidden" name="comment_id" value="{{ comment.key.id() }}"/>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <input type="submit" class="btn btn-primary btn-danger" value="Delete"/>
+                    </form>
+                    </div>
+                  </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+              </div><!-- /.modal -->
+            {% endif %}
+            <img class="discussion-bubble-avatar" src="{{ comment.author.get().avatar_url }}" width="16" height="16">
+            <b><a href="/profile?pro_id={{ comment.author.get().key.id() }}">{{ comment.author.get().name }}</a></b>
+            <small style="color:#686868;font-size:11px;">{{ comment.comment }}</small>
+            </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endfor %}
+
+    {% if not found and get_user==user %}
+    <div class="welcome">
+        <div class="jumbotron" style="margin-top:15px; background:url('/img/Holla.png') #FFF; background-size: cover;">
+          <h1>Holla!</h1>
+          <p>Start by Creating projects in your firms.</p>
+        </div>
+    </div>
+    {% endif %}
+    {% if not found and not get_user==user %}
+    <div class="welcome">
+        <div class="jumbotron" style="margin-top:15px; background:url('/img/Holla.png') #FFF; background-size: cover;">
+          <h1>Nothin'!</h1>
+          <p>No Projects can be found.</p>
+        </div>
+    </div>
+    {% endif %}
+    <br/>
+    </div>
+  </div>
+
+  <div class="col-md-3" style="padding:0;">
+    <br/>
+   <div class="span-menu">
+    <h1 style="margin-top: 15px;"><span class="span-dead">his</span><span class="span-alive">Firm's</span></h1>
+    </div>
+   <br/>
+    {% if foundFirm %}
+          {% for firm in firms %}
+          <div class="row" id="firm{{ firm.key.id() }}" style="margin-left: 5px;">
+              <b><a href="/projects?firm_id={{ firm.key.id() }}">{{ firm.title }}</a></b>
+                {% if logged_in %}
+                {% if firm.admin_id==user.key.id() %}
+                <a href="/firm?firm_id={{ firm.key.id() }}" style="text-decoration: none;"><span class="label label-info">Edit</span></a>
+                {% endif %}
+                {% endif %}
+          </div>
+          <br/>
+          {% endfor %}
+    {% endif %}
+    {% if not foundFirm %}
+    <br/>
+    <p style="font-size:12px;">Not invited to any firm yet... </p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

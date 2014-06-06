@@ -1,0 +1,250 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+
+  <div class="container" style="margin-bottom: 2em;">
+
+<div class="firms" style="padding-top:30px;">
+
+    <div class="quadcore">
+        <div class="row">
+                <div class="col-md-2">
+                <div class="options">
+                    <div class="span-menu">
+                    <h1 style="margin-top: 15px;"><span class="span-dead">your</span><span class="span-alive">Firm's</span></h1>
+                    </div>
+                   <br/>
+                    {% if foundFirm %}
+                          {% for firm in firms %}
+                          <div class="row" id="firm{{ firm.key.id() }}" style="margin-left: 5px;">
+                              <b><a href="/projects?firm_id={{ firm.key.id() }}">{{ firm.title }}</a></b>
+                                {% if logged_in %}
+                                {% if firm.admin_id==user.key.id() %}
+                                <a href="/firm?firm_id={{ firm.key.id() }}" style="text-decoration: none;"><span class="label label-info">Edit</span></a>
+                                {% endif %}
+                                {% endif %}
+                          </div>
+                          <br/>
+                          {% endfor %}
+                    {% endif %}
+                    {% if not foundFirm %}
+                    <br/>
+                    <h2 style="text-align:center;">:(</h2>
+                    <p style="font-size:12px;text-align:center;color:#afafaf;">you are not invited to any firm yet. </p>
+                    {% endif %}
+                </div>
+                    <br/>
+
+                </div>
+
+                <div class="col-md-7">
+                    {% if greetings and logged_in %}
+                    <div class="projects">
+                      {% for greeting in greetings %}
+
+                      <div class="row0" id="row{{ greeting.key.id() }}">
+
+                        <script type="text/javascript">
+                        $(function () {
+                            var deadDay{{ greeting.key.id() }} = new Date();
+                            deadDay{{ greeting.key.id() }} = new Date('{{ greeting.deadline.strftime('%m/%d/%Y %H:%M:%S %p') }}');
+                            $('#{{ greeting.key.id() }}').countdown({until: deadDay{{ greeting.key.id() }}});
+                        });
+                        </script>
+                         <script type="text/javascript">
+                        $(function () {
+                                        var today = new Date();
+                                        var diff = new Date();
+                                        var diffseconds = new Date();
+                                        var diffdays = new Date();
+                                        var deadlineDay{{ greeting.key.id() }} = new Date('{{ greeting.deadline.strftime('%m/%d/%Y %H:%M:%S %p') }}');
+                                        diff = deadlineDay{{ greeting.key.id() }}-today;
+                                        diffseconds = Math.round(diff/1000);
+                                        diffdays = Math.round(diff/1000/60/60/24);
+                                        if (diffdays<1) {
+                                                         if(diff<=0) {
+                                                             $('#row{{ greeting.key.id() }}').css('background-color', '#292929');
+                                                             $('#{{ greeting.key.id() }}').html('<h1 class="boldh1" style="background:#000;padding: 30px;">Project Dead!</h1>');
+                                                         }
+                                                        else {
+                                                             $('#row{{ greeting.key.id() }}').css('background-color', '#AF2828');
+                                                         }
+                                        }
+                                        else if (diffdays<=2) {$('#row{{ greeting.key.id() }}').css('background-color', '#AF2828');}
+                                        else if (diffdays<=5){$('#row{{ greeting.key.id() }}').css('background-color', '#FC7618');}
+                                        else if (diffdays<=10) {$('#row{{ greeting.key.id() }}').css('background-color', '#FFC200');}
+                                        else if (diffdays<=20) { $('#row{{ greeting.key.id() }}').css('background-color', '#0A8A03');}
+                                        else {$('#row{{ greeting.key.id() }}').css('background-color', '#0A8A03');}
+                        });
+                        </script>
+
+                        {% if greeting.author.get().key.id()==user.key.id() %}
+                        <a data-toggle="modal" href="#myModal{{ greeting.key.id() }}">
+                        <button type="button" class="close" aria-hidden="true" style="float:right;">&times;</button>
+                        </a>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="myModal{{ greeting.key.id() }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header" style="color:#000;">
+                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                  <h4 class="modal-title">Delete Post</h4>
+                                </div>
+                                <div class="modal-body" style="color:#000;">
+                                 Are you sure you want to delete your post?
+                                </div>
+                                <div class="modal-footer">
+                                 <form action="/delete_project" method="post">
+                                    <input type="hidden" name="project_id" value="{{ greeting.key.id() }}"/>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <input type="submit" class="btn btn-primary btn-danger" value="Delete"/>
+                                </form>
+                                </div>
+                              </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                          </div><!-- /.modal -->
+                        {% endif %}
+
+                        <b style="color:#000;">{{ greeting.title }}</b>
+                        <blockquote style="margin: 10px;">{{ greeting.content }}</blockquote>
+                       <div style="float:right; font-size:9px;">
+                       <script>
+                           $(document).ready(function(){
+                                $("[rel=tooltip]").tooltip({ placement: 'top'});
+                            });
+                       </script>
+                        <small class="smal">on <a href="#" rel="tooltip" data-toggle="tooltip" title="" data-original-title="{{ greeting.date.strftime('%d/%m/%Y') }}"><span class="glyphicon glyphicon-time"></span></a> by </small>
+                        {% if greeting.author %}
+                          <b><a href="/profile?pro_id={{ greeting.author.get().key.id() }}">{{ greeting.author.get().name }}</a></b>
+                           <img class="discussion-bubble-avatar" src="{{ greeting.author.get().avatar_url }}?sz=16">
+                        {% else %}
+                         An anonymous person wrote:
+                        {% endif %}
+                        </div>
+                        <br/>
+                        <div id="{{ greeting.key.id() }}" style="font-size: 2.9vw;margin-top:10px;margin-bottom:40px;"></div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        {% for comment in comments %}
+                        {% if comment.project_id==greeting.key.id() %}
+                            <div class="comment" style="font-size:12px;margin-bottom: 10px;">
+                            {% if comment.author.get().key.id()==user.key.id() %}
+                            <a data-toggle="modal" href="#myModal{{ comment.key.id() }}">
+                            <button type="button" class="close" aria-hidden="true" style="float:right;">&times;</button>
+                            </a>
+
+                              <!-- Modal -->
+                              <div class="modal fade" id="myModal{{ comment.key.id() }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header" style="color:#000;">
+                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                      <h4 class="modal-title">Delete Comment</h4>
+                                    </div>
+                                    <div class="modal-body" style="color:#000;">
+                                     Are you sure you want to delete your comment?
+                                    </div>
+                                    <div class="modal-footer">
+                                      <form action="/delete_comment" method="post">
+                                        <input type="hidden" name="comment_id" value="{{ comment.key.id() }}"/>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                        <input type="submit" class="btn btn-primary btn-danger" value="Delete"/>
+                                    </form>
+                                    </div>
+                                  </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                              </div><!-- /.modal -->
+                            {% endif %}
+                            <img class="discussion-bubble-avatar" src="{{ comment.author.get().avatar_url }}?sz=16">
+                            <b><a href="/profile?pro_id={{ comment.author.get().key.id() }}">{{ comment.author.get().name }}</a></b>
+                            <small class="smal" style="font-size:11px;">{{ comment.comment }}</small>
+                            </div>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if logged_in %}
+                        <div style="margin-top: 10px;">
+                        <form name="theform" action="/cadd" class="commentbox" method="post">
+                         <i class="icon-comment  icon-black" style="float:right;"></i>
+                          <img class="discussion-bubble-avatar" src="{{ user.avatar_url }}?sz=24">
+                            <div style="margin-left: 40px;">
+                                <input id="{{ greeting.key.id() }}" name="comment" rows="1" onkeypress="return entsub(event,this.form)" class="cmt" placeholder="Write a comment&hellip;"/>
+                                <input type="hidden" name="project_id" value="{{ greeting.key.id() }}"/>
+                                <input type="hidden" name="firm_id" value="{{ greeting.firm.get().key.id() }}">
+                            </div>
+                        </form>
+                        </div>
+                        {% endif %}
+                      </div>
+                      {% endfor %}
+                     </div>
+                    {% endif %}
+
+
+                    {% if foundFirm and not found %}
+                     <br/>
+                    <div class="welcome">
+                        <div class="jumbotron" style="margin:0 0; background:url('/img/Holla.png') #FFF; background-size: cover;">
+                          <h1>Start Now!</h1>
+                          <p>Start by adding your own projects in your created or joined firms/workplaces.</p>
+                        </div>
+                    </div>
+                    <br/>
+                    {% endif %}
+
+                    {% if not found and not foundFirm %}
+                    <br/>
+                    <div class="welcome">
+                        <div class="jumbotron" style="margin:0 0; background:url('/img/Holla.png') #FFF; background-size: cover;">
+                          <h1>Holla!</h1>
+                          <p>Welcome And Get Started. Now either get invited to a workplace or create your own workplace.</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="col-md-3">
+
+
+
+                    <div class="searchhome">
+                        <div class="span-menu">
+                        <h1 style="margin-top: 15px;"><span class="span-alive">Search</span></h1>
+                        </div>
+
+                      <div style="margin-bottom:12px;">
+                        <form action="/search" method="get" class="form-inline">
+                            <input name="query" class="form-control" onkeypress="return entsub(event,this.form)" required placeholder="Search" style="border-radius: 0px;">
+                          </form>
+                      </div>
+
+                      </div>
+
+                    <div class="newfirm">
+                        <div class="span-menu">
+                        <h1 style="margin-top: 15px;"><span class="span-dead">create a</span><span class="span-alive">New Firm</span></h1>
+                        </div>
+
+                      <div style="margin-bottom:12px;">
+                        <form action="/addfirm" method="post" class="form-inline">
+                            <input name="title" class="form-control" required placeholder="Company Name" style="border-radius: 0px;">
+                            <div class="form-group" style="margin-top:5px; margin-bottom: 10px;">
+                                <input type="submit" class="btn btn-small btn-primary" value="Add Firm" style="border-radius: 0px;">
+                            </div>
+                          </form>
+                      </div>
+
+                      </div>
+                    <br/>
+                </div>
+        </div>
+    </div>
+    <br/>
+</div>
+
+ </div>
+{% endblock %}

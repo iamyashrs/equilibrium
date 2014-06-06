@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block main %}
+
+<br/>
+<br/>
+<div class="container" style="margin-bottom: 2em;">
+
+{% for firm in firms %}
+<div class="company" style="float:left; margin-left:20px;margin-bottom: 10px;">
+<a style="text-decoration: none;" href="/projects?firm_id={{ firm.key.id() }}">
+    <div class="hero-dx" style="background: rgba(134, 134, 134, 0.3);height: 200px;width: 200px;">
+      {% if firm.logo %}
+      <img src="{{ images(firm.logo, 75) }}"/>
+      {% else %}
+      <img src="/img/Hinder-red.png" style="height:75px;width:75px;"/>
+       {% endif %}
+      <h2 style="color:#000;margin-top:4px;">{{ firm.title }}</h2>
+      <p style="line-height: 10px;margin: 0 0 0;font-size: 10px;">{{ firm.desc }}</p>
+      <span style="font-size: 9px;">added by {{ firm.admin.get().name }}</span>
+    </div>
+ </a>
+</div>
+{% endfor %}
+
+ <script type="text/javascript">
+$(function () {
+ $('body').css('background', '#FFF');
+
+});
+</script>
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block main %}
+
+<div class="container" style="margin-bottom: 2em;">
+<h2 class="boldh1" style="color:#000;">
+Invite Users to Project DeadLine!
+</h2>
+
+<div class="row">
+  <div class="col-md-4">
+
+    <a href="https://www.facebook.com/sharer/sharer.php?u=gcdc2013-projectdeadline.appspot.com" target="_blank">
+     Share on Facebook
+    </a>
+
+  </div>
+  <div class="col-md-4">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://gcdc2013-projectdeadline.appspot.com" data-text="Check out the all new Project Deadline!" data-size="large" data-hashtags="projectdeadline">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </div>
+  <div class="col-md-4">
+
+  <form action="/invite" method="post" class="form-inline">
+    <input name="email" class="form-control" placeholder="Email">
+    <div class="form-group" style="margin-top:5px;float:right;">
+        <input type="submit" class="btn btn-small btn-primary" value="Invite">
+    </div>
+  </form>
+
+  </div>
+</div>
+
+</div>
+
+{% endblock %}

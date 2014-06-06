@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+
+<div class="container" style="margin-bottom: 2em;">
+    <hr/>
+
+    <div class="searchhome">
+    <div class="span-menu">
+    <h1 style="margin-top: 15px;"><span class="span-alive">Search</span></h1>
+    </div>
+
+    <div style="margin-bottom:12px;">
+    <form action="/search" method="get" class="form-inline">
+        <input name="query" class="form-control" onkeypress="return entsub(event,this.form)" required placeholder="Search(Hit Enter..)" style="border-radius: 0px;">
+      </form>
+    </div>
+
+    </div>
+
+    <h1 class="boldh1" style="color:#000;border-bottom:3px solid #333;">Firms // Workplaces // Companies</h1>
+    <br/>
+     {% if len != 0 %}
+    {% for firm in results_firms %}
+    <div class="company" style="float:left; margin-left:20px;margin-bottom: 10px;">
+    <a style="text-decoration: none;" href="/projects?firm_id={{ firm.doc_id }}">
+        <div class="hero-dx" style="background: rgba(134, 134, 134, 0.3);height: 200px;width: 200px;">
+          {% if firm.logo.0.value and firm.logo.0.value != "null" %}
+          <img src="{{ images(firm.logo.0.value, 75) }}"/>
+          {% else %}
+          <img src="/img/Hinder-red.png" style="height:75px;width:75px;"/>
+           {% endif %}
+          <h2 style="color:#000;margin-top:4px;">{{ firm.title.0.value }}</h2>
+          <p style="line-height: 10px;margin: 0 0 0;font-size: 10px;">{{ firm.desc.0.value }}</p>
+          <span style="font-size: 9px;">added by {{ firm.author.0.value }}</span>
+        </div>
+     </a>
+    </div>
+    {% endfor %}
+    {% else %}
+     <h1 style="text-align: center;">none :(</h1>
+    {% endif %}
+
+    <hr/>
+</div>
+
+{% endblock %}
